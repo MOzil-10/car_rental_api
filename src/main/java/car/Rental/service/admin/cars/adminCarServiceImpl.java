@@ -129,6 +129,7 @@ public class adminCarServiceImpl implements adminCarService{
 
     private carDto convertToDto(Car car) {
         carDto dto = new carDto();
+        dto.setId(car.getId());
         dto.setMake(car.getMake());
         dto.setModel(car.getModel());
         dto.setRegistrationNumber(car.getRegistrationNumber());
