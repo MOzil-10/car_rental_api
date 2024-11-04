@@ -3,8 +3,10 @@ package car.Rental.controller;
 import car.Rental.dto.LoginDto;
 import car.Rental.dto.UserDto;
 import car.Rental.entity.User;
+import car.Rental.response.LoginResponse;
 import car.Rental.service.auth.AuthService;
 import car.Rental.service.jwt.JwtService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
+@SecurityRequirement(name = "bearerAuth")
 public class AuthController {
 
     private final AuthService service;
@@ -31,10 +37,20 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
-        User authenticatedUser = service.authenticateUser(loginDto);
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginUserDto) {
+        User authenticatedUser = service.authenticateUser(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
-        return ResponseEntity.ok(jwtToken);
-    }
 
+        Date issuedAt = jwtService.extractIssuedAt(jwtToken);
+        long expiresInMinutes = jwtService.getExpirationTime() / 1000 / 60;
+        Map<String, Object> claims = jwtService.extractAllClaims(jwtToken);
+
+        LoginResponse loginResponse = new LoginResponse()
+                .setToken(jwtToken)
+                .setExpiresInMinutes(expiresInMinutes)
+                .setIssuedAt(issuedAt.getTime())
+                .setClaims(claims);
+
+        return ResponseEntity.ok(loginResponse);
+    }
 }

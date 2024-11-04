@@ -4,6 +4,7 @@ import car.Rental.dto.RentalRequestDto;
 import car.Rental.dto.carDto;
 import car.Rental.entity.Car;
 import car.Rental.service.admin.cars.adminCarService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,7 @@ public class AdminCarController {
     @PostMapping("/cars")
     public ResponseEntity<Car> addCar(@RequestBody carDto carDto) throws IOException {
         Car newCar = adminCarService.addCar(carDto);
-
-        return ResponseEntity.ok(newCar);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newCar);
     }
 
     @GetMapping("/cars")
@@ -54,6 +54,9 @@ public class AdminCarController {
     @PostMapping("/rentals/{requestId}/approve")
     public ResponseEntity<RentalRequestDto> approveRentalRequest(@PathVariable Long requestId) {
         RentalRequestDto approvedRequest = adminCarService.approveRentalRequest(requestId);
+        if (approvedRequest == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
         return ResponseEntity.ok(approvedRequest);
     }
 
