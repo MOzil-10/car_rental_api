@@ -1,4 +1,4 @@
-package car.Rental.controller;
+package car.Rental.controller.authController;
 
 import car.Rental.dto.LoginDto;
 import car.Rental.dto.UserDto;

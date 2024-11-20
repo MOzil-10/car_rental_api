@@ -8,8 +8,8 @@ import java.util.List;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
+    List<Car> findByIsAvailableTrue();
     List<Car> findByModel(String model);
-    List<Car> findByIsAvailable(boolean isAvailable);
-    List<Car> findByMakeAndModel(String make, String model);
+    List<Car> findByMake(String make);
     List<Car> findByRentalRateLessThanEqual(double rentalRate);
 }

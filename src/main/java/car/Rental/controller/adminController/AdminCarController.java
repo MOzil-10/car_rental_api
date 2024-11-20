@@ -1,9 +1,9 @@
 package car.Rental.controller.adminController;
 
 import car.Rental.dto.RentalRequestDto;
-import car.Rental.dto.carDto;
+import car.Rental.dto.CarDto;
 import car.Rental.entity.Car;
-import car.Rental.service.admin.cars.adminCarService;
+import car.Rental.service.admin.AdminCarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +15,21 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminCarController {
 
-    private final adminCarService adminCarService;
+    private final AdminCarService adminCarService;
 
-    public AdminCarController(adminCarService adminCarService) {
+    public AdminCarController(AdminCarService adminCarService) {
         this.adminCarService = adminCarService;
     }
 
     @PostMapping("/cars")
-    public ResponseEntity<Car> addCar(@RequestBody carDto carDto) throws IOException {
+    public ResponseEntity<Car> addCar(@RequestBody CarDto carDto) throws IOException {
         Car newCar = adminCarService.addCar(carDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCar);
     }
 
     @GetMapping("/cars")
-    public ResponseEntity<List<carDto>> getAllCars() {
-        List<carDto> cars = adminCarService.getAllCars();
+    public ResponseEntity<List<CarDto>> getAllCars() {
+        List<CarDto> cars = adminCarService.getAllCars();
 
         return ResponseEntity.ok(cars);
     }

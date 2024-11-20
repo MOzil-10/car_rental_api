@@ -19,7 +19,6 @@ public class Car {
     private Long id;
     private String make;
     private String model;
-    private String registrationNumber;
     private boolean isAvailable;
     private double rentalRate;
 }

@@ -3,12 +3,11 @@ package car.Rental.dto;
 import lombok.Data;
 
 @Data
-public class carDto {
+public class CarDto {
 
     private Long id;
     private String make;
     private String model;
-    private String registrationNumber;
     private boolean isAvailable;
     private double rentalRate;
 }
